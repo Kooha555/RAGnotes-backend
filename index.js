@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import apiRoutes from "./api/v1/routes.js";
-import { connectMongo } from "./config/mongo.js";
-// import { connectTurso, db } from "./config/turso.js";
+import { connectMongo } from "./config/mongo.js"; import { connectTurso, db } from "./config/turso.js";
 import limiter from "./middleware/rateLimiter.js";
 import errorHandler from "./middleware/errorHandler.js";
 import cookieParser from "cookie-parser";
@@ -13,27 +12,28 @@ dotenv.config();
 
 const app = express();
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1);    //เชื่อ proxy ตัวแรก ถ้าไม่เซต trust proxy cookie secure อาจไม่ทำงาน
 
 // Global middlewares
-app.use(helmet());
+app.use(helmet());      //ใส่เพื่อเพิ่ม security headers ให้เว็บ
 
 const corsOptions = {
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
-    "https://ragnotes-frontend.vercel.app"
+    "https://ragnotes-frontend-1.vercel.app"
   ], // frontend domain
   credentials: true, // ✅ allow cookies to be sent
 };
 
 app.use(cors(corsOptions));
-app.use(limiter);
+app.use(limiter);             //จำกัดจำนวน request ต่อเวลา เพื่อป้องกัน abuse และลดโหลด server
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser());      //ใช้สำหรับ อ่านและจัดการ cookies
+
 // Centralized routes
-app.use("/", apiRoutes());
+app.use("/", apiRoutes(db));    //รวมเส้นทาง routes
 app.get("/", (_req, res) => {
   res.send(`
       <!DOCTYPE html>
@@ -90,7 +90,7 @@ const PORT = process.env.PORT || 3000;
 (async () => {
   try {
     await connectMongo();
-    // await connectTurso();
+    await connectTurso();
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT} ✅`);
     });

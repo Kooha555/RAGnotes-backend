@@ -30,7 +30,9 @@ export const connectTurso = async () => {
         user_id INTEGER
     );
   `);
-  await db.execute(`
+
+  //เช็คว่ามี table หรือยัง ถ้าไม่มีให้ create
+  await db.execute(`    
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,

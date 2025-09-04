@@ -60,6 +60,7 @@ Content-Type: application/json
   "password": "securePassword123"
 }
 
+
 ### Test route - Verify the token (replace <TOKEN> with the token from the login response)
 GET http://localhost:3030/mongo/auth/verify
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBhZDM2NGQxM2NmODM3NjcxMmIwYjkiLCJpYXQiOjE3NDU1NDA3MTcsImV4cCI6MTc0NTU0NDMxN30.yBtZemo4KdP2Xr_vtvD5KfKC6pdspIVIxRgxenSDCpo

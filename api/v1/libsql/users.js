@@ -10,6 +10,8 @@ export default (db) => {
     if (!name || !email)
       return res.status(400).send("Name and email are required");
 
+
+    // qurie torso
     const result = await db.execute({
       sql: "INSERT INTO users (name, email) VALUES (?, ?)",
       args: [name, email],
